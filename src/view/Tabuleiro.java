@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
@@ -21,7 +22,11 @@ public class Tabuleiro extends JFrame {
 	private JPanel contentPane;
 	//Cria o primeiro valor de personagem, inicializado no equivalente a vazio.
 	private int personagem = 0;
-
+	//Cria o primeiro valor de personagem selecionado!
+	private int player1_personagem = 0;
+	private int player2_personagem = 0;
+	private int player3_personagem = 0;
+	private int player4_personagem = 0;
 	/**
 	 * Launch the application.
 	 */
@@ -136,16 +141,24 @@ public class Tabuleiro extends JFrame {
 		JButton btnNewButton_player1 = new JButton("");
 		btnNewButton_player1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(personagem == 1)
+				if(personagem == 1 && player1_personagem != 1 && player2_personagem != 1 && player3_personagem != 1 && player4_personagem != 1) {
 					btnNewButton_player1.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Sieghart.jpg")));
-				else if(personagem == 2)
+					player1_personagem = 1;
+				}else if(personagem == 2 && player1_personagem != 2 && player2_personagem != 2 && player3_personagem != 2 && player4_personagem != 2) {
 					btnNewButton_player1.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Zero.jpg")));
-				else if(personagem == 3)
+					player1_personagem = 2;
+				}else if(personagem == 3 && player1_personagem != 3 && player2_personagem != 3 && player3_personagem != 3 && player4_personagem != 3) {
 					btnNewButton_player1.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Uno.jpg")));
-				else if(personagem == 4)
+					player1_personagem = 3;
+				}else if(personagem == 4 && player1_personagem != 4 && player2_personagem != 4 && player3_personagem != 4 && player4_personagem != 4) {
 					btnNewButton_player1.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Ai.jpg"))); 
-				else if(personagem == 0)
+					player1_personagem = 4;
+				}else if(personagem == 0) {
 					btnNewButton_player1.setIcon(new ImageIcon(Tabuleiro.class.getResource("")));
+					player1_personagem = 0;
+				}else {
+					JOptionPane.showMessageDialog(null, "Personagem Ja Escolhido!");
+				}
 			}
 		});
 		btnNewButton_player1.setBounds(1280, 101, 40, 40);
@@ -154,16 +167,24 @@ public class Tabuleiro extends JFrame {
 		JButton btnNewButton_player2 = new JButton("");
 		btnNewButton_player2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(personagem == 1)
+				if(personagem == 1 && player1_personagem != 1 && player2_personagem != 1 && player3_personagem != 1 && player4_personagem != 1) {
 					btnNewButton_player2.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Sieghart.jpg")));
-				else if(personagem == 2)
+					player2_personagem = 1;
+				}else if(personagem == 2 && player1_personagem != 2 && player2_personagem != 2 && player3_personagem != 2 && player4_personagem != 2) {
 					btnNewButton_player2.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Zero.jpg")));
-				else if(personagem == 3)
+					player2_personagem = 2;
+				}else if(personagem == 3 && player1_personagem != 3 && player2_personagem != 3 && player3_personagem != 3 && player4_personagem != 3) {
 					btnNewButton_player2.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Uno.jpg")));
-				else if(personagem == 4)
+					player2_personagem = 3;
+				}else if(personagem == 4 && player1_personagem != 4 && player2_personagem != 4 && player3_personagem != 4 && player4_personagem != 4) {
 					btnNewButton_player2.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Ai.jpg"))); 
-				else if(personagem == 0)
+					player2_personagem = 4;
+				}else if(personagem == 0) {
 					btnNewButton_player2.setIcon(new ImageIcon(Tabuleiro.class.getResource("")));
+					player2_personagem = 0;
+				}else {
+					JOptionPane.showMessageDialog(null, "Personagem Ja Escolhido!");
+				}
 			}
 		});
 		btnNewButton_player2.setBounds(1280, 220, 40, 40);
@@ -172,16 +193,24 @@ public class Tabuleiro extends JFrame {
 		JButton btnNewButton_player3 = new JButton("");
 		btnNewButton_player3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(personagem == 1)
+				if(personagem == 1 && player1_personagem != 1 && player2_personagem != 1 && player3_personagem != 1 && player4_personagem != 1) {
 					btnNewButton_player3.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Sieghart.jpg")));
-				else if(personagem == 2)
+					player3_personagem = 1;
+				}else if(personagem == 2 && player1_personagem != 2 && player2_personagem != 2 && player3_personagem != 2 && player4_personagem != 2) {
 					btnNewButton_player3.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Zero.jpg")));
-				else if(personagem == 3)
+					player3_personagem = 2;
+				}else if(personagem == 3 && player1_personagem != 3 && player2_personagem != 3 && player3_personagem != 3 && player4_personagem != 3) {
 					btnNewButton_player3.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Uno.jpg")));
-				else if(personagem == 4)
+					player3_personagem = 3;
+				}else if(personagem == 4 && player1_personagem != 4 && player2_personagem != 4 && player3_personagem != 4 && player4_personagem != 4) {
 					btnNewButton_player3.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Ai.jpg"))); 
-				else if(personagem == 0)
+					player3_personagem = 4;
+				}else if(personagem == 0) {
 					btnNewButton_player3.setIcon(new ImageIcon(Tabuleiro.class.getResource("")));
+					player3_personagem = 0;
+				}else {
+					JOptionPane.showMessageDialog(null, "Personagem Ja Escolhido!");
+				}
 			}
 		});
 		btnNewButton_player3.setBounds(1280, 351, 40, 40);
@@ -190,16 +219,24 @@ public class Tabuleiro extends JFrame {
 		JButton btnNewButton_player4 = new JButton("");
 		btnNewButton_player4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(personagem == 1)
+				if(personagem == 1 && player1_personagem != 1 && player2_personagem != 1 && player3_personagem != 1 && player4_personagem != 1) {
 					btnNewButton_player4.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Sieghart.jpg")));
-				else if(personagem == 2)
+					player4_personagem = 1;
+				}else if(personagem == 2 && player1_personagem != 2 && player2_personagem != 2 && player3_personagem != 2 && player4_personagem != 2) {
 					btnNewButton_player4.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Zero.jpg")));
-				else if(personagem == 3)
+					player4_personagem = 2;
+				}else if(personagem == 3 && player1_personagem != 3 && player2_personagem != 3 && player3_personagem != 3 && player4_personagem != 3) {
 					btnNewButton_player4.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Uno.jpg")));
-				else if(personagem == 4)
+					player4_personagem = 3;
+				}else if(personagem == 4 && player1_personagem != 4 && player2_personagem != 4 && player3_personagem != 4 && player4_personagem != 4) {
 					btnNewButton_player4.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Ai.jpg"))); 
-				else if(personagem == 0)
+					player4_personagem = 4;
+				}else if(personagem == 0) {
 					btnNewButton_player4.setIcon(new ImageIcon(Tabuleiro.class.getResource("")));
+					player4_personagem = 0;
+				}else {
+					JOptionPane.showMessageDialog(null, "Personagem Ja Escolhido!");
+				}
 			}
 		});
 		btnNewButton_player4.setBounds(1280, 481, 40, 40);
