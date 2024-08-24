@@ -1,20 +1,19 @@
 package view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.ImageIcon;
-import java.awt.FlowLayout;
-import java.awt.BorderLayout;
-import java.awt.Color;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.border.EmptyBorder;
 
 public class Tabuleiro extends JFrame {
 
@@ -63,24 +62,28 @@ public class Tabuleiro extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		// A seguir os labels de escolher personagem!
-		JLabel lblNewLabel_1 = new JLabel("Escolha o Jogador 1");
+		JLabel lblNewLabel_1 = new JLabel("Jogador 1");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(0, 30, 130, 57);
+		lblNewLabel_1.setBounds(47, 67, 60, 23);
 		contentPane.add(lblNewLabel_1);
 
-		JLabel lblNewLabel_2 = new JLabel("Escolha o Jogador 2");
+		JLabel lblNewLabel_2 = new JLabel("Jogador 2");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setBounds(0, 152, 130, 57);
+		lblNewLabel_2.setBounds(170, 67, 60, 23);
 		contentPane.add(lblNewLabel_2);
 
-		JLabel lblNewLabel_3 = new JLabel("Escolha o Jogador 3");
+		JLabel lblNewLabel_3 = new JLabel("Jogador 3");
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3.setBounds(0, 283, 130, 57);
+		lblNewLabel_3.setBounds(47, 269, 60, 23);
 		contentPane.add(lblNewLabel_3);
 
-		JLabel lblNewLabel_4 = new JLabel("Escolha o Jogador 4");
+		JLabel lblNewLabel_4 = new JLabel("Jogador 4");
+		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_4.setBounds(0, 413, 130, 57);
+		lblNewLabel_4.setBounds(170, 269, 60, 23);
 		contentPane.add(lblNewLabel_4);
 
 		// A seguir os botões para selecionar os personagens!
@@ -91,7 +94,7 @@ public class Tabuleiro extends JFrame {
 				personagem = 1;
 			}
 		});
-		btnNewButton_sieg.setBounds(14, 561, 40, 40);
+		btnNewButton_sieg.setBounds(24, 560, 40, 40);
 		contentPane.add(btnNewButton_sieg);
 
 		JButton btnNewButton_zero = new JButton("");
@@ -101,7 +104,7 @@ public class Tabuleiro extends JFrame {
 			}
 		});
 		btnNewButton_zero.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Zero.jpg")));
-		btnNewButton_zero.setBounds(64, 561, 40, 40);
+		btnNewButton_zero.setBounds(72, 560, 40, 40);
 		contentPane.add(btnNewButton_zero);
 
 		JButton btnNewButton_uno = new JButton("");
@@ -111,7 +114,7 @@ public class Tabuleiro extends JFrame {
 			}
 		});
 		btnNewButton_uno.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Uno.jpg")));
-		btnNewButton_uno.setBounds(14, 612, 40, 40);
+		btnNewButton_uno.setBounds(122, 560, 40, 40);
 		contentPane.add(btnNewButton_uno);
 
 		JButton btnNewButton_ai = new JButton("");
@@ -121,7 +124,7 @@ public class Tabuleiro extends JFrame {
 				personagem = 4;
 			}
 		});
-		btnNewButton_ai.setBounds(64, 612, 40, 40);
+		btnNewButton_ai.setBounds(172, 560, 40, 40);
 		contentPane.add(btnNewButton_ai);
 
 		// Botão para selecionar personagem vazio, caso tenha selecionado errado!
@@ -131,7 +134,7 @@ public class Tabuleiro extends JFrame {
 				personagem = 0;
 			}
 		});
-		btnNewButton_vazio.setBounds(39, 657, 40, 40);
+		btnNewButton_vazio.setBounds(222, 560, 40, 40);
 		contentPane.add(btnNewButton_vazio);
 
 		/*
@@ -140,6 +143,7 @@ public class Tabuleiro extends JFrame {
 		 * Quero também que quando uma pessoa selecione um personagem, a outra não possa
 		 * selecionar o mesmo! ~Rafael
 		 */
+
 		JButton btnNewButton_player1 = new JButton("");
 		btnNewButton_player1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -167,8 +171,19 @@ public class Tabuleiro extends JFrame {
 				}
 			}
 		});
-		btnNewButton_player1.setBounds(39, 101, 40, 40);
+		btnNewButton_player1.setBounds(56, 101, 40, 40);
 		contentPane.add(btnNewButton_player1);
+
+		JLabel lblNewLabelBoarder1 = new JLabel("");
+		lblNewLabelBoarder1.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/border.png")));
+		lblNewLabelBoarder1.setBounds(48, 94, 55, 55);
+		contentPane.add(lblNewLabelBoarder1);
+
+		// Dado do Player 1
+		JButton btnNewButtonDice1 = new JButton("");
+		btnNewButtonDice1.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/dice.png")));
+		btnNewButtonDice1.setBounds(61, 152, 30, 30);
+		contentPane.add(btnNewButtonDice1);
 
 		JButton btnNewButton_player2 = new JButton("");
 		btnNewButton_player2.addActionListener(new ActionListener() {
@@ -197,8 +212,19 @@ public class Tabuleiro extends JFrame {
 				}
 			}
 		});
-		btnNewButton_player2.setBounds(39, 220, 40, 40);
+		btnNewButton_player2.setBounds(180, 101, 40, 40);
 		contentPane.add(btnNewButton_player2);
+
+		JLabel lblNewLabelBoarder2 = new JLabel("");
+		lblNewLabelBoarder2.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/border.png")));
+		lblNewLabelBoarder2.setBounds(172, 93, 55, 55);
+		contentPane.add(lblNewLabelBoarder2);
+
+		// Dado do Player 2
+		JButton btnNewButtonDice2 = new JButton("");
+		btnNewButtonDice2.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/dice.png")));
+		btnNewButtonDice2.setBounds(184, 152, 30, 30);
+		contentPane.add(btnNewButtonDice2);
 
 		JButton btnNewButton_player3 = new JButton("");
 		btnNewButton_player3.addActionListener(new ActionListener() {
@@ -227,8 +253,19 @@ public class Tabuleiro extends JFrame {
 				}
 			}
 		});
-		btnNewButton_player3.setBounds(39, 351, 40, 40);
+		btnNewButton_player3.setBounds(56, 303, 40, 40);
 		contentPane.add(btnNewButton_player3);
+
+		JLabel lblNewLabelBoarder3 = new JLabel("");
+		lblNewLabelBoarder3.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/border.png")));
+		lblNewLabelBoarder3.setBounds(48, 295, 55, 55);
+		contentPane.add(lblNewLabelBoarder3);
+
+		// Dado do Player 3
+		JButton btnNewButtonDice3 = new JButton("");
+		btnNewButtonDice3.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/dice.png")));
+		btnNewButtonDice3.setBounds(61, 354, 30, 30);
+		contentPane.add(btnNewButtonDice3);
 
 		JButton btnNewButton_player4 = new JButton("");
 		btnNewButton_player4.addActionListener(new ActionListener() {
@@ -257,12 +294,23 @@ public class Tabuleiro extends JFrame {
 				}
 			}
 		});
-		btnNewButton_player4.setBounds(39, 481, 40, 40);
+		btnNewButton_player4.setBounds(181, 303, 40, 40);
 		contentPane.add(btnNewButton_player4);
 
-		// BIOMAS
+		JLabel lblNewLabelBoarder4 = new JLabel("");
+		lblNewLabelBoarder4.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/border.png")));
+		lblNewLabelBoarder4.setBounds(173, 295, 55, 55);
+		contentPane.add(lblNewLabelBoarder4);
 		
-		//FOGO
+		//Dado do Player 4
+		JButton btnNewButtonDice4 = new JButton("");
+		btnNewButtonDice4.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/dice.png")));
+		btnNewButtonDice4.setBounds(184, 354, 30, 30);
+		contentPane.add(btnNewButtonDice4);
+
+		// BIOMAS
+
+		// FOGO
 		JButton btnNewButton_fire1 = new JButton("");
 		btnNewButton_fire1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -349,9 +397,8 @@ public class Tabuleiro extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		
-		
-		//ÁGUA
+
+		// ÁGUA
 		btnNewButton_water1.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/water.png")));
 		btnNewButton_water1.setBounds(1222, 30, 80, 80);
 		contentPane.add(btnNewButton_water1);
@@ -439,10 +486,15 @@ public class Tabuleiro extends JFrame {
 
 		// Label que possui o mapa, posicionado no final para não ficar em cima dos
 		// outros componentes!!!
-//		JLabel lblNewLabel = new JLabel("");
-//		lblNewLabel.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/Tabuleiro_Placeholder.jpg")));
-//		lblNewLabel.setBounds(22, 19, 1280, 720);
-//		contentPane.add(lblNewLabel);
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNewLabel.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/mapa.jpg")));
+		lblNewLabel.setBounds(22, 19, 1280, 720);
+		contentPane.add(lblNewLabel);
+
+		JButton btnNewButton = new JButton("New button");
+		btnNewButton.setBounds(23, 152, 89, 23);
+		contentPane.add(btnNewButton);
 
 		// Função para centralizar o programa na tela!
 		setLocationRelativeTo(null);
