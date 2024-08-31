@@ -9,6 +9,7 @@ public class Programa {
 		Tabuleiro tabuleiro = new Tabuleiro();
 		tabuleiro.setVisible(true);
 		//teste
+		//teste 2
 	}
 
 }
