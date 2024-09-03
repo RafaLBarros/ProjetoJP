@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -205,7 +206,6 @@ public class Tabuleiro extends JFrame {
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		// BIOMAS
 
-		
 		JLabel inicioLabel = new JLabel();
 		int inicioX = 300;
 		int inicioY = 11;
@@ -213,103 +213,86 @@ public class Tabuleiro extends JFrame {
 		inicioLabel.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/inicio.png")));
 		inicioLabel.setBounds(inicioX, inicioY, 80, 80);
 		contentPane.add(inicioLabel);
-		
-		
-		
-		// Array de labels de fogo
-		JLabel[] fireLabels = new JLabel[7];
-		int[] fireX = { 400, 500, 600, 700, 800, 900, 1000 }; 
-		int fireY = 11; // Posição Y fixa para todos os labels de fogo
 
-		for (int i = 0; i < fireLabels.length; i++) {
-			fireLabels[i] = new JLabel();
-			fireLabels[i].setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/fire.jpg")));
-			fireLabels[i].setBounds(fireX[i], fireY, 80, 80); // Usando o array fireX e a posição fixa fireY
-			contentPane.add(fireLabels[i]);
+		JLabel[][] labels = new JLabel[8][7];
+
+		// Coordenadas X e Y para cada tipo de casa
+		int[][] coordsX = { 
+				{ 400, 500, 600, 700, 800, 900, 1000 }, // Fogo
+				{ 1000, 1000, 1000, 1000, 1000, 1000, 900 }, // Água
+				{ 800, 700, 600, 500, 400, 400, 400 }, // Vento
+				{ 400, 400, 400, 500, 600, 700, 800 }, // Gelo
+				{ 900, 900, 900, 900, 900, 800, 700 }, // Eletricidade
+				{ 600, 500, 500, 500, 500, 600, 700 }, // Areia
+				{ 800, 800, 800, 700, 600, 600 }, // Escuridão
+				{ 700 } // Final
+		};
+
+		int[][] coordsY = { 
+				{ 11, 11, 11, 11, 11, 11, 11 }, // Fogo
+				{ 101, 201, 301, 401, 501, 601, 601 }, // Água
+				{ 601, 601, 601, 601, 601, 501, 401 }, // Vento
+				{ 301, 201, 101, 101, 101, 101, 101 }, // Gelo
+				{ 101, 201, 301, 401, 501, 501, 501 }, // Eletricidade
+				{ 501, 501, 401, 301, 201, 201, 201 }, // Areia
+				{ 201, 301, 401, 401, 401, 301 }, // Escuridão
+				{ 301 } // Final
+		};
+
+		// Icones de Elementos das Casas
+		String[] icons = { "/images/fire.jpg", 
+				"/images/water.png", 
+				"/images/wind.png", 
+				"/images/ice.png", 
+				"/images/electric.png", 
+				"/images/sand.png", 
+				"/images/dark.png", 
+				"/images/fim.png" 
+		};
+
+
+//		for (int tipo = 0; tipo < labels.length; tipo++) {
+//			int length = coordsX[tipo].length; 
+//			labels[tipo] = new JLabel[length]; 
+//
+//			for (int i = 0; i < length; i++) {
+//				labels[tipo][i] = new JLabel();
+//				labels[tipo][i].setIcon(new ImageIcon(Tabuleiro.class.getResource(icons[tipo])));
+//				labels[tipo][i].setBounds(coordsX[tipo][i], coordsY[tipo][i], 80, 80);
+//				contentPane.add(labels[tipo][i]);
+//			}
+//		}
+
+		HashMap<Integer, JLabel> casas = new HashMap<>();
+
+		int idCasa = 0; // Idzando (nao pensei em outro nome) casas
+
+	
+		for (int tipo = 0; tipo < labels.length; tipo++) {
+			int length = coordsX[tipo].length;
+			labels[tipo] = new JLabel[length];
+
+			for (int i = 0; i < length; i++) {
+				labels[tipo][i] = new JLabel();
+				labels[tipo][i].setIcon(new ImageIcon(Tabuleiro.class.getResource(icons[tipo])));
+				labels[tipo][i].setBounds(coordsX[tipo][i], coordsY[tipo][i], 80, 80);
+				contentPane.add(labels[tipo][i]);
+
+				// Adiciona a label ao HashMap com ID
+				casas.put(idCasa++, labels[tipo][i]);
+				System.out.println(idCasa);
+			}
+
 		}
-
-		// Array de labels de água
-		JLabel[] waterLabels = new JLabel[7];
-		int[] waterX = { 1000, 1000, 1000, 1000, 1000, 1000, 900 };
-		int[] waterY = { 101, 201, 301, 401, 501, 601, 601 };
-
-		for (int i = 0; i < waterLabels.length; i++) {
-			waterLabels[i] = new JLabel();
-			waterLabels[i].setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/water.png")));
-			waterLabels[i].setBounds(waterX[i], waterY[i], 80, 80);
-			contentPane.add(waterLabels[i]);
-		}
-
-		// Array de labels de vento
-		JLabel[] windLabels = new JLabel[7];
-		int[] windX = { 800, 700, 600, 500, 400, 400, 400 };
-		int[] windY = { 601, 601, 601, 601, 601, 501, 401 };
-
-		for (int i = 0; i < windLabels.length; i++) {
-			windLabels[i] = new JLabel();
-			windLabels[i].setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/wind.png")));
-			windLabels[i].setBounds(windX[i], windY[i], 80, 80);
-			contentPane.add(windLabels[i]);
-		}
-
-		// Array de labels de gelo
-		JLabel[] iceLabels = new JLabel[7];
-		int[] iceX = { 400, 400, 400, 500, 600, 700, 800 };
-		int[] iceY = { 301, 201, 101, 101, 101, 101, 101 };
-
-		for (int i = 0; i < iceLabels.length; i++) {
-			iceLabels[i] = new JLabel();
-			iceLabels[i].setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/ice.png")));
-			iceLabels[i].setBounds(iceX[i], iceY[i], 80, 80);
-			contentPane.add(iceLabels[i]);
-		}
-
-		// Array de labels de eletricidade
-		JLabel[] electricLabels = new JLabel[7];
-		int[] electricX = { 900, 900, 900, 900, 900, 800, 700 };
-		int[] electricY = { 101, 201, 301, 401, 501, 501, 501 };
-
-		for (int i = 0; i < electricLabels.length; i++) {
-			electricLabels[i] = new JLabel();
-			electricLabels[i].setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/electric.png")));
-			electricLabels[i].setBounds(electricX[i], electricY[i], 80, 80);
-			contentPane.add(electricLabels[i]);
-		}
-
-		// Array de labels de areia
-		JLabel[] sandLabels = new JLabel[7];
-		int[] sandX = { 600, 500, 500, 500, 500, 600, 700 };
-		int[] sandY = { 501, 501, 401, 301, 201, 201, 201 };
-
-		for (int i = 0; i < sandLabels.length; i++) {
-			sandLabels[i] = new JLabel();
-			sandLabels[i].setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/sand.png")));
-			sandLabels[i].setBounds(sandX[i], sandY[i], 80, 80);
-			contentPane.add(sandLabels[i]);
-		}
-
-		// Array de labels de escuridão
-		JLabel[] darkLabels = new JLabel[6];
-		int[] darkX = { 800, 800, 800, 700, 600, 600 };
-		int[] darkY = { 201, 301, 401, 401, 401, 301 };
-
-		for (int i = 0; i < darkLabels.length; i++) {
-			darkLabels[i] = new JLabel();
-			darkLabels[i].setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/dark.png")));
-			darkLabels[i].setBounds(darkX[i], darkY[i], 80, 80);
-			contentPane.add(darkLabels[i]);
-		}
-
-
-		JLabel finalLabel = new JLabel();
-		int finalX = 700;
-		int finalY = 301;
-
-		finalLabel.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/fim.png")));
-		finalLabel.setBounds(finalX, finalY, 80, 80);
-		contentPane.add(finalLabel);
-
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		
+		//Linha pra simular o caminho
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNewLabel.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/mapa2.png")));
+		lblNewLabel.setBounds(0, 0, 1280, 720);
+		contentPane.add(lblNewLabel);
 
 		// Label que possui o mapa, posicionado no final para não ficar em cima dos
 		// outros componentes!!!
