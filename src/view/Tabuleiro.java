@@ -240,7 +240,7 @@ public class Tabuleiro extends JFrame {
 		};
 
 		// Icones de Elementos das Casas
-		String[] icons = { "/images/fire.jpg", 
+		String[] icons = { "/images/fire.png", 
 				"/images/water.png", 
 				"/images/wind.png", 
 				"/images/ice.png", 
