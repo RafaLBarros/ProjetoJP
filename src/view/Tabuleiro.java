@@ -21,17 +21,22 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import model.*;
+
 public class Tabuleiro extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	private Background contentPane;
 	// Cria o primeiro valor de personagem, inicializado no equivalente a vazio.
 	private int personagem = 0;
 	// Cria o primeiro valor de personagem selecionado!
 	ArrayList<Integer> lista_personagens = new ArrayList<Integer>();
 	private boolean isRolling = false;
 	private int characters_selected = 0;
-
+	private int quantidade_casas = 49;
+	private Casa[] tabuleiro = new Casa[quantidade_casas];
+	private Personagem[] listaPersonagem = new Personagem[4];
+	
 	Random random = new Random();
 
 	/**
@@ -57,12 +62,9 @@ public class Tabuleiro extends JFrame {
 		// Não permite mexer o tamanho da pagina
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// Tamanho pre-setado para o placeholder ficar em um tamanho bom, mexer depois
-		// com o mapa novo!
 		setBounds(100, 100, 1296, 759);
-		contentPane = new JPanel();
-		// Coloquei a cor do background branca para mesclar com o mapa!
-		contentPane.setBackground(new Color(255, 255, 255));
+		//ContentPane agora é background classe ja feita com o background!
+		contentPane = new Background();
 
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -93,12 +95,7 @@ public class Tabuleiro extends JFrame {
 		lblNewLabel_4.setBounds(88, 330, 60, 23);
 		contentPane.add(lblNewLabel_4);
 
-		/*
-		 * A seguir botões para pressionar após selecionar qual personagem quer! Quero
-		 * mudar a forma que isso funciona, mas não tenho ideias ainda, aceito sugestões
-		 * Quero também que quando uma pessoa selecione um personagem, a outra não possa
-		 * selecionar o mesmo! (JA ADICIONADO) ~Rafael
-		 */
+
 		JLabel[] lbl_player = new JLabel[4];
 		JLabel[] lbl_bordaPlayer = new JLabel[4];
 		int[] playerX = { 97, 97, 97, 97 };
@@ -122,7 +119,8 @@ public class Tabuleiro extends JFrame {
 		sel_player.setBounds(50, 503, 140, 14);
 		contentPane.add(sel_player);
 
-		// A seguir os botões para selecionar os personagens!
+
+		// A seguir os botões para selecionar os personagens e array com os objetos de personagem instanciados!
 		JButton[] btn_characters = new JButton[4];
 		int[] characterX = { 25, 75, 125, 175 };
 		int[] characterY = { 542, 542, 542, 542 };
@@ -137,50 +135,26 @@ public class Tabuleiro extends JFrame {
 		btn_characters[0].addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				personagem = 1;
-				if (lista_personagens.contains(personagem)) {
-					JOptionPane.showMessageDialog(null, "Personagem Ja Escolhido!");
-					return;
-				}
-				lista_personagens.add(personagem);
-				characters_selected += 1;
-				mudarPersonagem(lbl_player, btn_characters, sel_player);
-
+				escolherPersonagem(personagem,lbl_player, btn_characters, sel_player);
+				
 			}
 		});
 		btn_characters[1].addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				personagem = 2;
-				if (lista_personagens.contains(personagem)) {
-					JOptionPane.showMessageDialog(null, "Personagem Ja Escolhido!");
-					return;
-				}
-				lista_personagens.add(personagem);
-				characters_selected += 1;
-				mudarPersonagem(lbl_player, btn_characters, sel_player);
+				escolherPersonagem(personagem,lbl_player, btn_characters, sel_player);
 			}
 		});
 		btn_characters[2].addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				personagem = 3;
-				if (lista_personagens.contains(personagem)) {
-					JOptionPane.showMessageDialog(null, "Personagem Ja Escolhido!");
-					return;
-				}
-				lista_personagens.add(personagem);
-				characters_selected += 1;
-				mudarPersonagem(lbl_player, btn_characters, sel_player);
+				escolherPersonagem(personagem,lbl_player, btn_characters, sel_player);
 			}
 		});
 		btn_characters[3].addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				personagem = 4;
-				if (lista_personagens.contains(personagem)) {
-					JOptionPane.showMessageDialog(null, "Personagem Ja Escolhido!");
-					return;
-				}
-				lista_personagens.add(personagem);
-				characters_selected += 1;
-				mudarPersonagem(lbl_player, btn_characters, sel_player);
+				escolherPersonagem(personagem,lbl_player, btn_characters, sel_player);
 			}
 		});
 
@@ -251,20 +225,10 @@ public class Tabuleiro extends JFrame {
 		};
 
 
-//		for (int tipo = 0; tipo < labels.length; tipo++) {
-//			int length = coordsX[tipo].length; 
-//			labels[tipo] = new JLabel[length]; 
-//
-//			for (int i = 0; i < length; i++) {
-//				labels[tipo][i] = new JLabel();
-//				labels[tipo][i].setIcon(new ImageIcon(Tabuleiro.class.getResource(icons[tipo])));
-//				labels[tipo][i].setBounds(coordsX[tipo][i], coordsY[tipo][i], 80, 80);
-//				contentPane.add(labels[tipo][i]);
-//			}
-//		}
-
 		HashMap<Integer, JLabel> casas = new HashMap<>();
 
+		
+		
 		int idCasa = 0; // Idzando (nao pensei em outro nome) casas
 
 	
@@ -280,7 +244,7 @@ public class Tabuleiro extends JFrame {
 
 				// Adiciona a label ao HashMap com ID
 				casas.put(idCasa++, labels[tipo][i]);
-				System.out.println(idCasa);
+				tabuleiro[idCasa-1] = new Casa(idCasa,tipo);
 			}
 
 		}
@@ -293,14 +257,7 @@ public class Tabuleiro extends JFrame {
 		lblNewLabel.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/mapa2.png")));
 		lblNewLabel.setBounds(0, 0, 1280, 720);
 		contentPane.add(lblNewLabel);
-
-		// Label que possui o mapa, posicionado no final para não ficar em cima dos
-		// outros componentes!!!
-		JLabel lblNewLabel_Mapa = new JLabel("");
-		lblNewLabel_Mapa.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_Mapa.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/mapa.jpg")));
-		lblNewLabel_Mapa.setBounds(0, 0, 1280, 720);
-		contentPane.add(lblNewLabel_Mapa);
+		
 
 		// Função para centralizar o programa na tela!
 		setLocationRelativeTo(null);
@@ -339,7 +296,17 @@ public class Tabuleiro extends JFrame {
 			JOptionPane.showMessageDialog(null, "Espere o dado terminar de rolar!");
 		}
 	}
-
+	void escolherPersonagem(int personagem, JLabel[] lbl_player, JButton[] btn_characters, JLabel sel_player) {
+		if (lista_personagens.contains(personagem)) {
+			JOptionPane.showMessageDialog(null, "Personagem Ja Escolhido!");
+			return;
+		}
+		lista_personagens.add(personagem);
+		characters_selected += 1;
+		mudarPersonagem(lbl_player, btn_characters, sel_player);
+		
+	}
+	
 	void mudarPersonagem(JLabel[] lbl_player, JButton[] btn_characters, JLabel sel_player) {
 		sel_player.setVisible(true);
 		sel_player.setText("Selecionar Player " + (characters_selected + 1));
@@ -356,6 +323,18 @@ public class Tabuleiro extends JFrame {
 			for (int i = 0; i < 4; i++) {
 				btn_characters[i].setVisible(false);
 			}
+			instanciarButtonStart();
 		}
+	}
+	void instanciarButtonStart() {
+		//JButton de começar o jogo após os players selecionarem os jogadores!
+		JButton buttonStart = new JButton("Start!");
+		buttonStart.setBounds(75,500,80,30);
+		contentPane.add(buttonStart);
+		buttonStart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				buttonStart.setVisible(false);
+			}
+		});
 	}
 }
