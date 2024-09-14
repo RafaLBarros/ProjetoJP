@@ -1,15 +1,11 @@
 package view;
 
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -17,11 +13,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import model.*;
+import controller.ControleCasa;
+import model.Casa;
 
 public class Tabuleiro extends JFrame {
 
@@ -35,7 +31,7 @@ public class Tabuleiro extends JFrame {
 	private int characters_selected = 0;
 	private int quantidade_casas = 49;
 	private Casa[] tabuleiro = new Casa[quantidade_casas];
-	private Personagem[] listaPersonagem = new Personagem[4];
+	private ControleCasa controleCasa = new ControleCasa();
 	
 	Random random = new Random();
 
@@ -244,7 +240,7 @@ public class Tabuleiro extends JFrame {
 
 				// Adiciona a label ao HashMap com ID
 				casas.put(idCasa++, labels[tipo][i]);
-				tabuleiro[idCasa-1] = new Casa(idCasa,tipo);
+				controleCasa.setTabuleiro((idCasa-1),tipo);
 			}
 
 		}

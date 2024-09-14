@@ -17,7 +17,7 @@ public class Background extends JPanel
     //Lê o arquivo de imagem background que a gente quer
     try
     {               
-      image = ImageIO.read(new File("C:/Users/WINDOWS/eclipse-workspace/ProjetoJP/src/images/mapa.jpg"));
+      image = ImageIO.read(Tabuleiro.class.getResource("/images/mapa.jpg"));
     }
     catch (IOException e)
     {
