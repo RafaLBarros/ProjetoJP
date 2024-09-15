@@ -19,8 +19,10 @@ public class ControleCasa {
 		return tabuleiro;
 	}
 	public void setTabuleiro(int indice,int tipo) {
-		this.tabuleiro[indice] = new Casa(indice,tipo);
+		this.tabuleiro[indice+(tipo*7)] = new Casa(indice,tipo);
 	}
-	
+	public Casa getCasa(int indice) {
+		return this.tabuleiro[indice];
+	}
 	
 }

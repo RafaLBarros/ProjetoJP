@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -17,24 +16,40 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import controller.ControleCasa;
-import model.Casa;
+import controller.ControlePersonagem;
 
 public class Tabuleiro extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private Background contentPane;
-	// Cria o primeiro valor de personagem, inicializado no equivalente a vazio.
-	private int personagem = 0;
-	// Cria o primeiro valor de personagem selecionado!
-	ArrayList<Integer> lista_personagens = new ArrayList<Integer>();
 	private boolean isRolling = false;
-	private int characters_selected = 0;
-	private int quantidade_casas = 49;
-	private Casa[] tabuleiro = new Casa[quantidade_casas];
 	private ControleCasa controleCasa = new ControleCasa();
-	
+	private ControlePersonagem controlePersonagem = new ControlePersonagem();
 	Random random = new Random();
+	private int inicioX = 300;
+	private int inicioY = 11;
+	// Coordenadas X e Y para cada tipo de casa
+	private int[][] coordsX = { 
+			{ 400, 500, 600, 700, 800, 900, 1000 }, // Fogo
+			{ 1000, 1000, 1000, 1000, 1000, 1000, 900 }, // Água
+			{ 800, 700, 600, 500, 400, 400, 400 }, // Vento
+			{ 400, 400, 400, 500, 600, 700, 800 }, // Gelo
+			{ 900, 900, 900, 900, 900, 800, 700 }, // Eletricidade
+			{ 600, 500, 500, 500, 500, 600, 700 }, // Areia
+			{ 800, 800, 800, 700, 600, 600, 700 }, // Escuridão e Final
+	};
 
+	private int[][] coordsY = { 
+			{ 11, 11, 11, 11, 11, 11, 11 }, // Fogo
+			{ 101, 201, 301, 401, 501, 601, 601 }, // Água
+			{ 601, 601, 601, 601, 601, 501, 401 }, // Vento
+			{ 301, 201, 101, 101, 101, 101, 101 }, // Gelo
+			{ 101, 201, 301, 401, 501, 501, 501 }, // Eletricidade
+			{ 501, 501, 401, 301, 201, 201, 201 }, // Areia
+			{ 201, 301, 401, 401, 401, 301, 301 }, // Escuridão e Final
+	};
+	private int turno = 0;
+	private JLabel[] lbl_charactermini = new JLabel[4];
 	/**
 	 * Launch the application.
 	 */
@@ -50,6 +65,7 @@ public class Tabuleiro extends JFrame {
 			}
 		});
 	}
+	
 
 	/**
 	 * Create the frame.
@@ -59,7 +75,7 @@ public class Tabuleiro extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1296, 759);
-		//ContentPane agora é background classe ja feita com o background!
+		//ContentPane agora é background classe ja feita com a imagem!
 		contentPane = new Background();
 
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -130,27 +146,27 @@ public class Tabuleiro extends JFrame {
 		}
 		btn_characters[0].addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				personagem = 1;
-				escolherPersonagem(personagem,lbl_player, btn_characters, sel_player);
+				controlePersonagem.setPersonagem(1);
+				escolherPersonagemVisual(controlePersonagem.getPersonagem(),lbl_player, btn_characters, sel_player);
 				
 			}
 		});
 		btn_characters[1].addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				personagem = 2;
-				escolherPersonagem(personagem,lbl_player, btn_characters, sel_player);
+				controlePersonagem.setPersonagem(2);
+				escolherPersonagemVisual(controlePersonagem.getPersonagem(),lbl_player, btn_characters, sel_player);
 			}
 		});
 		btn_characters[2].addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				personagem = 3;
-				escolherPersonagem(personagem,lbl_player, btn_characters, sel_player);
+				controlePersonagem.setPersonagem(3);
+				escolherPersonagemVisual(controlePersonagem.getPersonagem(),lbl_player, btn_characters, sel_player);
 			}
 		});
 		btn_characters[3].addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				personagem = 4;
-				escolherPersonagem(personagem,lbl_player, btn_characters, sel_player);
+				controlePersonagem.setPersonagem(4);
+				escolherPersonagemVisual(controlePersonagem.getPersonagem(),lbl_player, btn_characters, sel_player);
 			}
 		});
 
@@ -158,56 +174,24 @@ public class Tabuleiro extends JFrame {
 		btn_selecionarPlayer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btn_selecionarPlayer.setVisible(false);
-				mudarPersonagem(lbl_player, btn_characters, sel_player);
+				mudarPersonagemVisual(lbl_player, btn_characters, sel_player);
 			}
 		});
 
 		btn_selecionarPlayer.setBounds(50, 503, 140, 14);
 		contentPane.add(btn_selecionarPlayer);
-		/*
-		 * Animação do DiceRoll instanciada antes para que o método saiba onde chamar!
-		 * 
-		 */
-		JLabel lblNewLabel_DiceRoll = new JLabel("");
-		lblNewLabel_DiceRoll.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/dice1.png")));
-		lblNewLabel_DiceRoll.setBounds(463, 401, 256, 256);
-		contentPane.add(lblNewLabel_DiceRoll);
-		lblNewLabel_DiceRoll.setVisible(false);
+
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		// BIOMAS
 
 		JLabel inicioLabel = new JLabel();
-		int inicioX = 300;
-		int inicioY = 11;
 
 		inicioLabel.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/inicio.png")));
 		inicioLabel.setBounds(inicioX, inicioY, 80, 80);
 		contentPane.add(inicioLabel);
 
-		JLabel[][] labels = new JLabel[8][7];
+		JLabel[][] labels = new JLabel[7][7];
 
-		// Coordenadas X e Y para cada tipo de casa
-		int[][] coordsX = { 
-				{ 400, 500, 600, 700, 800, 900, 1000 }, // Fogo
-				{ 1000, 1000, 1000, 1000, 1000, 1000, 900 }, // Água
-				{ 800, 700, 600, 500, 400, 400, 400 }, // Vento
-				{ 400, 400, 400, 500, 600, 700, 800 }, // Gelo
-				{ 900, 900, 900, 900, 900, 800, 700 }, // Eletricidade
-				{ 600, 500, 500, 500, 500, 600, 700 }, // Areia
-				{ 800, 800, 800, 700, 600, 600 }, // Escuridão
-				{ 700 } // Final
-		};
-
-		int[][] coordsY = { 
-				{ 11, 11, 11, 11, 11, 11, 11 }, // Fogo
-				{ 101, 201, 301, 401, 501, 601, 601 }, // Água
-				{ 601, 601, 601, 601, 601, 501, 401 }, // Vento
-				{ 301, 201, 101, 101, 101, 101, 101 }, // Gelo
-				{ 101, 201, 301, 401, 501, 501, 501 }, // Eletricidade
-				{ 501, 501, 401, 301, 201, 201, 201 }, // Areia
-				{ 201, 301, 401, 401, 401, 301 }, // Escuridão
-				{ 301 } // Final
-		};
 
 		// Icones de Elementos das Casas
 		String[] icons = { "/images/fire.png", 
@@ -217,7 +201,6 @@ public class Tabuleiro extends JFrame {
 				"/images/electric.png", 
 				"/images/sand.png", 
 				"/images/dark.png", 
-				"/images/fim.png" 
 		};
 
 
@@ -234,13 +217,18 @@ public class Tabuleiro extends JFrame {
 
 			for (int i = 0; i < length; i++) {
 				labels[tipo][i] = new JLabel();
-				labels[tipo][i].setIcon(new ImageIcon(Tabuleiro.class.getResource(icons[tipo])));
+				if ((tipo*7)+i != 48) {
+					labels[tipo][i].setIcon(new ImageIcon(Tabuleiro.class.getResource(icons[tipo])));
+				}else {
+					labels[tipo][i].setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/fim.png")));
+				}
 				labels[tipo][i].setBounds(coordsX[tipo][i], coordsY[tipo][i], 80, 80);
 				contentPane.add(labels[tipo][i]);
 
 				// Adiciona a label ao HashMap com ID
 				casas.put(idCasa++, labels[tipo][i]);
-				controleCasa.setTabuleiro((idCasa-1),tipo);
+				controleCasa.setTabuleiro(i,tipo);
+				System.out.println(tipo +""+""+ controleCasa.getCasa(i+(tipo*7)).getTipo());
 			}
 
 		}
@@ -253,33 +241,57 @@ public class Tabuleiro extends JFrame {
 		lblNewLabel.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/mapa2.png")));
 		lblNewLabel.setBounds(0, 0, 1280, 720);
 		contentPane.add(lblNewLabel);
-		
 
+// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		JLabel[] lbl_charactermini = new JLabel[4];
+		
+		
 		// Função para centralizar o programa na tela!
 		setLocationRelativeTo(null);
 	}
 
-	void roll(JLabel DiceRoll) {
+	void rollVisual() {
+		if(turno == 4)
+			turno = 0;
+		turno += 1;
+		JLabel lbl_DiceRoll = new JLabel("");
+		lbl_DiceRoll.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/dice1.png")));
+		lbl_DiceRoll.setBounds(463, 401, 256, 256);
+		contentPane.add(lbl_DiceRoll,2);
 		if (!isRolling) {
 			isRolling = true;
 			// Setei o dado visivel na tela
-			DiceRoll.setVisible(true);
+			lbl_DiceRoll.setVisible(true);
 			Thread thread = new Thread() {
 				public void run() {
 					try {
 						for (int i = 0; i < 15; i++) {
+							controlePersonagem.getPlayerInstanciado(turno-1).setLastRoll(random.nextInt(6)+1);
 							// Peguei o url da imagem do dado e setei
-							String urldice = new String("/images/dice" + (random.nextInt(6) + 1) + ".png");
-							DiceRoll.setIcon(new ImageIcon(Tabuleiro.class.getResource(urldice)));
+							String urldice = new String("/images/dice" + (controlePersonagem.getPlayerInstanciado(turno-1).getLastRoll()) + ".png");
+							lbl_DiceRoll.setIcon(new ImageIcon(Tabuleiro.class.getResource(urldice)));
 							// Espera 0.1 segundos pra fazer de novo
 							Thread.sleep(100);
 						}
 						// Espera 3 segundos com o valor final
-						Thread.sleep(3000);
-						// Faz o dao ficar invisivel de novo
-						DiceRoll.setVisible(false);
+						Thread.sleep(1000);
+						// Faz o dao ficar invisivel de novo e remove ele!
+						lbl_DiceRoll.setVisible(false);
+						contentPane.remove(lbl_DiceRoll);
+						contentPane.revalidate();
+						contentPane.repaint();
 						// Reseta o valor de isRolling para poder rolar de novo!
+						Thread.sleep(1000);
 						isRolling = false;
+						controlePersonagem.getPlayerInstanciado(turno-1).walkCasaAtual(controlePersonagem.getPlayerInstanciado(turno-1).getLastRoll());
+						int casaAtual = controlePersonagem.getPlayerInstanciado(turno-1).getCasaAtual();
+						if(casaAtual > 48)
+							casaAtual = 48;
+						System.out.println(casaAtual);
+						System.out.println(controleCasa.getCasa(casaAtual).getTipo());
+						andarPersonagens(casaAtual,controlePersonagem.getPlayerInstanciado(turno-1).getPersonagem(),controleCasa.getCasa(casaAtual).getTipo(),turno);
+						instanciarButtonRoll();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -292,29 +304,29 @@ public class Tabuleiro extends JFrame {
 			JOptionPane.showMessageDialog(null, "Espere o dado terminar de rolar!");
 		}
 	}
-	void escolherPersonagem(int personagem, JLabel[] lbl_player, JButton[] btn_characters, JLabel sel_player) {
-		if (lista_personagens.contains(personagem)) {
+	void escolherPersonagemVisual(int personagem, JLabel[] lbl_player, JButton[] btn_characters, JLabel sel_player) {
+		if (controlePersonagem.getLista_personagens().contains(personagem)) {
 			JOptionPane.showMessageDialog(null, "Personagem Ja Escolhido!");
 			return;
 		}
-		lista_personagens.add(personagem);
-		characters_selected += 1;
-		mudarPersonagem(lbl_player, btn_characters, sel_player);
+		controlePersonagem.getLista_personagens().add(personagem);
+		controlePersonagem.setCharacters_selected(controlePersonagem.getCharacters_selected()+1);
+		mudarPersonagemVisual(lbl_player, btn_characters, sel_player);
 		
 	}
 	
-	void mudarPersonagem(JLabel[] lbl_player, JButton[] btn_characters, JLabel sel_player) {
+	void mudarPersonagemVisual(JLabel[] lbl_player, JButton[] btn_characters, JLabel sel_player) {
 		sel_player.setVisible(true);
-		sel_player.setText("Selecionar Player " + (characters_selected + 1));
-		if (characters_selected == 0) {
+		sel_player.setText("Selecionar Player " + (controlePersonagem.getCharacters_selected() + 1));
+		if (controlePersonagem.getCharacters_selected() == 0) {
 			for (int i = 0; i < 4; i++) {
 				btn_characters[i].setVisible(true);
 			}
 			return;
 		}
-		lbl_player[characters_selected - 1]
-				.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/character" + (personagem) + ".jpg")));
-		if (characters_selected == 4) {
+		lbl_player[controlePersonagem.getCharacters_selected() - 1]
+				.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/character" + (controlePersonagem.getPersonagem()) + ".jpg")));
+		if (controlePersonagem.getCharacters_selected() == 4) {
 			sel_player.setVisible(false);
 			for (int i = 0; i < 4; i++) {
 				btn_characters[i].setVisible(false);
@@ -330,7 +342,42 @@ public class Tabuleiro extends JFrame {
 		buttonStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				buttonStart.setVisible(false);
+				controlePersonagem.instanciarPersonagens();
+				instanciarButtonRoll();
+				andarPersonagens(0,0,-1,0);
 			}
 		});
+	}
+	void instanciarButtonRoll() {
+		//JButton de começar as rolagens
+		JButton buttonRoll = new JButton("Roll!");
+		buttonRoll.setBounds(75,500,80,30);
+		contentPane.add(buttonRoll,1);
+		buttonRoll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				buttonRoll.setVisible(false);
+				contentPane.remove(buttonRoll);
+				contentPane.revalidate();
+				contentPane.repaint();
+				rollVisual();
+			}
+		});
+	}
+	void andarPersonagens(int casaAtual,int personagem,int tipo,int turno) {
+		if(casaAtual > 48)
+			casaAtual = 48;
+		int coordSoma[][] = {{0,0},{40,0},{0,40},{40,40}};
+		if(tipo == -1) {
+			//Label dos personagens nas casas!
+			for(int i = 0;i < controlePersonagem.getCharacters_selected();i++) {
+				lbl_charactermini[i] = new JLabel("");
+				lbl_charactermini[i].setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/charactermini"+(i+1)+".png")));
+				lbl_charactermini[i].setBounds(inicioX + coordSoma[i][0],inicioY+coordSoma[i][1],40,40);
+				contentPane.add(lbl_charactermini[i],2);
+				}
+		}
+		else { 
+			lbl_charactermini[personagem-1].setBounds(coordsX[tipo][casaAtual -(tipo*7)]+coordSoma[personagem-1][0],coordsY[tipo][casaAtual-(tipo*7)]+coordSoma[personagem-1][1],40,40);
+		}
 	}
 }

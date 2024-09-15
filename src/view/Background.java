@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.image.*;
 import javax.imageio.*;
 
-public class Background extends JPanel
+public class Background extends JLayeredPane
 {
   public static BufferedImage image;
  
