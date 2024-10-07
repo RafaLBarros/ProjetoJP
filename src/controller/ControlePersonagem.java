@@ -51,4 +51,17 @@ public class ControlePersonagem {
 		return personagensInstanciados[i];
 	}
 	
+	public void adicionarMaxdice(int i) {
+		personagensInstanciados[i].setMaxdice(personagensInstanciados[i].getMaxdice()+1);
+	}
+	public void adicionarMindice(int i) {
+		personagensInstanciados[i].setMindice(personagensInstanciados[i].getMindice()+1);
+	}
+	public void setConcludedStep(int i,int tipo) {
+		personagensInstanciados[i].setConcludedStep(tipo);
+	}
+	public void adicionarTotalRolagem(int i) {
+		personagensInstanciados[i].setTotalRolagem(personagensInstanciados[i].getTotalRolagem()+1);
+	}
+	
 }

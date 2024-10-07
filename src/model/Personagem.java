@@ -6,7 +6,34 @@ public class Personagem {
 	private int pontos;
 	private int totalRolagem;
 	private int lastRoll;
+	private int maxdice;
+	private int mindice;
+	private int concludedStep;
 	
+	public int getConcludedStep() {
+		return concludedStep;
+	}
+
+	public void setConcludedStep(int concludedStep) {
+		this.concludedStep = concludedStep;
+	}
+
+	public int getMaxdice() {
+		return maxdice;
+	}
+
+	public void setMaxdice(int maxdice) {
+		this.maxdice = maxdice;
+	}
+
+	public int getMindice() {
+		return mindice;
+	}
+
+	public void setMindice(int mindice) {
+		this.mindice = mindice;
+	}
+
 	public int getLastRoll() {
 		return lastRoll;
 	}
@@ -17,6 +44,8 @@ public class Personagem {
 
 	public Personagem(int personagem) {
 		this.personagem = personagem;
+		this.pontos = 0;
+		this.totalRolagem = 0;
 	}
 
 	public int getCasaAtual() {
