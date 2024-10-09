@@ -63,5 +63,37 @@ public class ControlePersonagem {
 	public void adicionarTotalRolagem(int i) {
 		personagensInstanciados[i].setTotalRolagem(personagensInstanciados[i].getTotalRolagem()+1);
 	}
-	
+	public int[][] calcularPontos() {
+		int[][] arrayScore = {{0,1},{0,2},{0,3},{0,4}};
+		int indiceSalvo = -1;
+		int comparador = -1;
+		for(int i = 0; i < 4;i++) {
+			if(personagensInstanciados[i].getMaxdice() > comparador) {
+				comparador = personagensInstanciados[i].getMaxdice();
+				indiceSalvo = i;
+			}
+		}
+		arrayScore[indiceSalvo][0]+=1;
+		comparador = -1;
+		for(int i = 0; i < 4;i++) {
+			if(personagensInstanciados[i].getMindice() > comparador) {
+				comparador = personagensInstanciados[i].getMindice();
+				indiceSalvo = i;
+			}
+		}
+		arrayScore[indiceSalvo][0]-=1;
+		comparador = -1;
+		for(int i = 0; i < 4;i++) {
+			if(personagensInstanciados[i].getTotalRolagem() > comparador) {
+				comparador = personagensInstanciados[i].getTotalRolagem();
+				indiceSalvo = i;
+			}
+		}
+		arrayScore[indiceSalvo][0]+=0; //Depois de implementar um bom sistema pra variar a quantidade de rolagens, implementar a pontuação.
+		comparador = -1;
+		for(int i = 0; i < 4;i++) {
+			arrayScore[i][0] += personagensInstanciados[i].getConcludedStep();
+		}
+		return arrayScore;
+	}
 }

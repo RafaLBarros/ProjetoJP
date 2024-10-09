@@ -8,8 +8,6 @@ public class Programa {
 		// TODO Auto-generated method stub
 		Tabuleiro tabuleiro = new Tabuleiro();
 		tabuleiro.setVisible(true);
-		//teste
-		//teste 2
 	}
 	
 }

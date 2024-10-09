@@ -10,14 +10,14 @@ public class Background extends JLayeredPane
 {
   public static BufferedImage image;
  
-  public Background ()
+  public Background (String bgurl)
   {
 	//Puxa tudo da classe superior, classe pai
     super();
     //Lê o arquivo de imagem background que a gente quer
     try
     {               
-      image = ImageIO.read(Tabuleiro.class.getResource("/images/mapa.jpg"));
+      image = ImageIO.read(Tabuleiro.class.getResource(bgurl));
     }
     catch (IOException e)
     {

@@ -26,7 +26,7 @@ public class Tabuleiro extends JFrame {
 	private ControleCasa controleCasa = new ControleCasa();
 	private ControlePersonagem controlePersonagem = new ControlePersonagem();
 	private boolean inGame = true;
-	
+	private boolean canRoll = true;
 	//Atributo que é utilizado no método de roll de dado.
 	Random random = new Random();
 	
@@ -70,7 +70,7 @@ public class Tabuleiro extends JFrame {
 		setBounds(100, 100, 1296, 759);
 		
 		//ContentPane agora é background classe ja feita com a imagem!
-		contentPane = new Background();
+		contentPane = new Background("/images/mapa.jpg");
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -246,7 +246,7 @@ public class Tabuleiro extends JFrame {
 	 //Método para fazer o visual de rolar o dado!
 	void rollVisual() {
 		//Checa se o turno é 4, se for 4 volta pro 0 (player 1)
-		if(turno == 4)
+		if (turno == 4)
 			turno = 0;
 		//Aumenta o turno para ir até o proximo jogador
 		turno += 1;
@@ -254,7 +254,7 @@ public class Tabuleiro extends JFrame {
 		JLabel lbl_DiceRoll = new JLabel("");
 		lbl_DiceRoll.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/dice1.png")));
 		lbl_DiceRoll.setBounds(463, 401, 256, 256);
-		contentPane.add(lbl_DiceRoll,1);
+		contentPane.add(lbl_DiceRoll, 1);
 		//Se não tiver rolando, permite rolar o dado!
 		if (!isRolling) {
 			isRolling = true;
@@ -266,9 +266,10 @@ public class Tabuleiro extends JFrame {
 					try {
 						for (int i = 0; i < 15; i++) {
 							//Seta o ultimo roll como um random de 1 a 6 (faz isso 15 vezes mas só armazena o ultimo!)
-							controlePersonagem.getPlayerInstanciado(turno-1).setLastRoll(random.nextInt(6)+1);
+							controlePersonagem.getPlayerInstanciado(turno - 1).setLastRoll(random.nextInt(6) + 1);
 							// Peguei o url da imagem do dado e setei
-							String urldice = new String("/images/dice" + (controlePersonagem.getPlayerInstanciado(turno-1).getLastRoll()) + ".png");
+							String urldice = new String("/images/dice"
+									+ (controlePersonagem.getPlayerInstanciado(turno - 1).getLastRoll()) + ".png");
 							lbl_DiceRoll.setIcon(new ImageIcon(Tabuleiro.class.getResource(urldice)));
 							// Espera 0.1 segundos pra fazer de novo
 							Thread.sleep(100);
@@ -276,14 +277,14 @@ public class Tabuleiro extends JFrame {
 						// Espera 1 segundos com o valor final
 						Thread.sleep(1000);
 						// Adiciona 1 no total de rolagens
-						controlePersonagem.adicionarTotalRolagem(turno-1);
+						controlePersonagem.adicionarTotalRolagem(turno - 1);
 						// Se tirou 6, adiciona 1 ao total de MaxDice
-						if(controlePersonagem.getPlayerInstanciado(turno-1).getLastRoll() == 6) {
-							controlePersonagem.adicionarMaxdice(turno-1);		
+						if (controlePersonagem.getPlayerInstanciado(turno - 1).getLastRoll() == 6) {
+							controlePersonagem.adicionarMaxdice(turno - 1);
 						}
 						// Se tirou 1, adiciona 1 ao total de MinDice
-						else if(controlePersonagem.getPlayerInstanciado(turno-1).getLastRoll() == 1) {
-							controlePersonagem.adicionarMindice(turno-1);
+						else if (controlePersonagem.getPlayerInstanciado(turno - 1).getLastRoll() == 1) {
+							controlePersonagem.adicionarMindice(turno - 1);
 						}
 						// Faz o dado ficar invisivel de novo e remove ele!
 						lbl_DiceRoll.setVisible(false);
@@ -294,7 +295,7 @@ public class Tabuleiro extends JFrame {
 						Thread.sleep(1000);
 						isRolling = false;
 						//Executa o metodo de andar personagem, passando qual o turno para saber o jogador e o personagem deste jogador!
-						andarPersonagens(controlePersonagem.getPlayerInstanciado(turno-1).getPersonagem(),turno);
+						andarPersonagens(controlePersonagem.getPlayerInstanciado(turno - 1).getPersonagem(), turno);
 						//Executa o metodo para devolver o botão de roll no mapa, para o proximo jogador rolar!
 						instanciarButtonRoll();
 					} catch (InterruptedException e) {
@@ -308,7 +309,7 @@ public class Tabuleiro extends JFrame {
 			// Se o valor de isRolling é true, o dado ainda está sendo rolado, portanto deve
 			// esperar
 			JOptionPane.showMessageDialog(null, "Espere o dado terminar de rolar!");
-		}
+		} 
 	}
 	void escolherPersonagemVisual(int personagem, JLabel[] lbl_player, JButton[] btn_characters, JLabel sel_player) {
 		//Se personagem ja foi escolhido, não permite!
@@ -377,7 +378,7 @@ public class Tabuleiro extends JFrame {
 		contentPane.add(buttonRoll,1);
 		buttonRoll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (inGame) {
+				if (inGame && canRoll) {
 					//Some com o botão
 					buttonRoll.setVisible(false);
 					contentPane.remove(buttonRoll);
@@ -390,6 +391,8 @@ public class Tabuleiro extends JFrame {
 		});
 	}
 	void andarPersonagens(int personagem,int turno) {
+		//Impede de rolar enquanto tiver alguem andando!
+		canRoll = false;
 		//Coordenadas especificas para cada personagem!
 		int coordSoma[][] = {{0,0},{40,0},{0,40},{40,40}};
 		//Se turno for -1 (Esse valor pode ser qualquer um, coloquei -1 só pra simbolizar que nunca vai ser -1 durante o jogo, então esse é o momento de começar o jogo!
@@ -400,6 +403,7 @@ public class Tabuleiro extends JFrame {
 				lbl_charactermini[i].setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/charactermini"+(i+1)+".png")));
 				lbl_charactermini[i].setBounds(inicioX + coordSoma[i][0],inicioY+coordSoma[i][1],40,40);
 				contentPane.add(lbl_charactermini[i],2);
+				canRoll = true;
 				}
 		}
 		//Se turno for diferente de -1, o jogo já começou!
@@ -437,6 +441,7 @@ public class Tabuleiro extends JFrame {
 						else {
 							controlePersonagem.setConcludedStep(turno-1,tipo);
 						}
+						canRoll = true;
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -449,13 +454,6 @@ public class Tabuleiro extends JFrame {
 	void finalizarJogo() {
 		Scoreboard scoreboard = new Scoreboard(controlePersonagem);
 		inGame = false;
-		String string = String.format("Player 1 concluiu %d etapas!\nPlayer 1 rolou %d seis no dado!\nPlayer 1 rolou %d um no dado!\nPlayer 1 rolou %d vezes o dado!\n",controlePersonagem.getPlayerInstanciado(0).getConcludedStep(),controlePersonagem.getPlayerInstanciado(0).getMaxdice(),controlePersonagem.getPlayerInstanciado(0).getMindice(),controlePersonagem.getPlayerInstanciado(0).getTotalRolagem());
-		String string2 = String.format("Player 2 concluiu %d etapas!\nPlayer 2 rolou %d seis no dado!\nPlayer 2 rolou %d um no dado!\nPlayer 2 rolou %d vezes o dado!\n",controlePersonagem.getPlayerInstanciado(1).getConcludedStep(),controlePersonagem.getPlayerInstanciado(1).getMaxdice(),controlePersonagem.getPlayerInstanciado(1).getMindice(),controlePersonagem.getPlayerInstanciado(1).getTotalRolagem());
-		String string3 = String.format("Player 3 concluiu %d etapas!\nPlayer 3 rolou %d seis no dado!\nPlayer 3 rolou %d um no dado!\nPlayer 3 rolou %d vezes o dado!\n",controlePersonagem.getPlayerInstanciado(2).getConcludedStep(),controlePersonagem.getPlayerInstanciado(2).getMaxdice(),controlePersonagem.getPlayerInstanciado(2).getMindice(),controlePersonagem.getPlayerInstanciado(2).getTotalRolagem());
-		String string4 = String.format("Player 4 concluiu %d etapas!\nPlayer 4 rolou %d seis no dado!\nPlayer 4 rolou %d um no dado!\nPlayer 4 rolou %d vezes o dado!\n",controlePersonagem.getPlayerInstanciado(3).getConcludedStep(),controlePersonagem.getPlayerInstanciado(3).getMaxdice(),controlePersonagem.getPlayerInstanciado(3).getMindice(),controlePersonagem.getPlayerInstanciado(3).getTotalRolagem());
-		System.out.println(string);
-		System.out.println(string2);
-		System.out.println(string3);
-		System.out.println(string4);
+		this.dispose();
 	}
 }
