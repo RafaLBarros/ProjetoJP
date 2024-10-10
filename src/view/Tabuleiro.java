@@ -66,6 +66,13 @@ public class Tabuleiro extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		// Define o título da janela
+		setTitle("Grand Chase - Board Game");
+
+		// Define o ícone da janela
+		setIconImage(new ImageIcon(Tabuleiro.class.getResource("/images/gc_logo.png")).getImage());
+
+		
 		//Tamanho da página
 		setBounds(100, 100, 1296, 759);
 		
