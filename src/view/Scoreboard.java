@@ -21,7 +21,7 @@ public class Scoreboard extends JFrame{
 	private Background background;
 	
 	public Scoreboard(ControlePersonagem controlePersonagem) {
-		background = new Background("/images/1bg.png");
+		background = new Background("/images/2bg.jpeg");
 		this.controlePersonagem = controlePersonagem;
 		// Não permite mexer o tamanho da pagina
 		setResizable(false);
@@ -35,11 +35,12 @@ public class Scoreboard extends JFrame{
 		setContentPane(background);
 		background.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Placar");
-		lblNewLabel.setBounds(0, 0, 1280, 45);
-		lblNewLabel.setFont(new Font("Verdana", Font.BOLD, 36));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		background.add(lblNewLabel);
+		JLabel lbl_placar = new JLabel("Placar");
+		lbl_placar.setBounds(10, 30, 1280, 45);
+		lbl_placar.setFont(new Font("Verdana", Font.BOLD, 36));
+		lbl_placar.setHorizontalAlignment(SwingConstants.CENTER);
+		background.setLayer(lbl_placar, 2);
+		background.add(lbl_placar);
 		
 		JLabel lbl_valores = new JLabel();
 		lbl_valores.setBounds(58, 162, 310, 420);
@@ -50,6 +51,7 @@ public class Scoreboard extends JFrame{
 		String string3 = String.format("<html>Jogador 3 concluiu %d etapas!<br>Jogador 3 rolou %d seis no dado!<br>Jogador 3 rolou %d um no dado!<br>Jogador 3 rolou %d vezes o dado!<br>",controlePersonagem.getPlayerInstanciado(2).getConcludedStep(),controlePersonagem.getPlayerInstanciado(2).getMaxdice(),controlePersonagem.getPlayerInstanciado(2).getMindice(),controlePersonagem.getPlayerInstanciado(2).getTotalRolagem());
 		String string4 = String.format("<html>Jogador 4 concluiu %d etapas!<br>Jogador 4 rolou %d seis no dado!<br>Jogador 4 rolou %d um no dado!<br>Jogador 4 rolou %d vezes o dado!<br>",controlePersonagem.getPlayerInstanciado(3).getConcludedStep(),controlePersonagem.getPlayerInstanciado(3).getMaxdice(),controlePersonagem.getPlayerInstanciado(3).getMindice(),controlePersonagem.getPlayerInstanciado(3).getTotalRolagem());
 		lbl_valores.setText(string + "<html><br>" + string2 + "<html><br>" + string3 + "<html><br>" + string4 + "<html><br>");
+		background.setLayer(lbl_valores, 2);
 		background.add(lbl_valores);
 		
 		scorePlayer = controlePersonagem.calcularPontos();
@@ -60,6 +62,7 @@ public class Scoreboard extends JFrame{
 		lbl_vitoria.setFont(new Font("Verdana", Font.BOLD, 17));
 		lbl_vitoria.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_vitoria.setBounds(460, 56, 360, 77);
+		background.setLayer(lbl_vitoria, 2);
 		background.add(lbl_vitoria);
 		
 		JLabel lbl_primeiro = new JLabel("");
@@ -67,6 +70,7 @@ public class Scoreboard extends JFrame{
 		lbl_primeiro.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_primeiro.setFont(new Font("Verdana", Font.BOLD, 17));
 		lbl_primeiro.setBounds(510, 150, 260, 35);
+		background.setLayer(lbl_primeiro, 2);
 		background.add(lbl_primeiro);
 		
 		JLabel lbl_segundo = new JLabel("");
@@ -74,6 +78,7 @@ public class Scoreboard extends JFrame{
 		lbl_segundo.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_segundo.setFont(new Font("Verdana", Font.BOLD, 17));
 		lbl_segundo.setBounds(510, 200, 260, 35);
+		background.setLayer(lbl_segundo, 2);
 		background.add(lbl_segundo);
 		
 		JLabel lbl_terceiro = new JLabel("");
@@ -81,6 +86,7 @@ public class Scoreboard extends JFrame{
 		lbl_terceiro.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_terceiro.setFont(new Font("Verdana", Font.BOLD, 17));
 		lbl_terceiro.setBounds(510, 250, 260, 35);
+		background.setLayer(lbl_terceiro, 2);
 		background.add(lbl_terceiro);
 		
 		JLabel lbl_quarto = new JLabel("4º: Jogador 4: 0 pontos!");
@@ -88,37 +94,57 @@ public class Scoreboard extends JFrame{
 		lbl_quarto.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_quarto.setFont(new Font("Verdana", Font.BOLD, 17));
 		lbl_quarto.setBounds(510, 300, 260, 35);
+		background.setLayer(lbl_quarto, 2);
 		background.add(lbl_quarto);
 		
 		JLabel img_primeiro = new JLabel("");
 		int pers = controlePersonagem.getPersonagemInstanciado(scorePlayer[3][1]-1);
 		img_primeiro.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/charactermini"+(pers)+".png")));
 		img_primeiro.setBounds(470, 150, 40, 40);
+		background.setLayer(img_primeiro, 2);
 		background.add(img_primeiro);
 		
 		JLabel img_segundo = new JLabel("");
 		pers = controlePersonagem.getPersonagemInstanciado(scorePlayer[2][1]-1);
 		img_segundo.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/charactermini"+(pers)+".png")));
 		img_segundo.setBounds(470, 200, 40, 40);
+		background.setLayer(img_segundo, 2);
 		background.add(img_segundo);
 		
 		JLabel img_terceiro = new JLabel("");
 		pers = controlePersonagem.getPersonagemInstanciado(scorePlayer[1][1]-1);
 		img_terceiro.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/charactermini"+(pers)+".png")));
 		img_terceiro.setBounds(470, 250, 40, 40);
+		background.setLayer(img_terceiro, 2);
 		background.add(img_terceiro);
 		
 		JLabel img_quarto = new JLabel("");
 		pers = controlePersonagem.getPersonagemInstanciado(scorePlayer[0][1]-1);
 		img_quarto.setIcon(new ImageIcon(Tabuleiro.class.getResource("/images/charactermini"+(pers)+".png")));
 		img_quarto.setBounds(470, 300, 40, 40);
+		background.setLayer(img_quarto, 2);
 		background.add(img_quarto);
 		
 		JLabel lbl_estatisticas = new JLabel("Estatísticas");
 		lbl_estatisticas.setFont(new Font("Verdana", Font.BOLD, 20));
 		lbl_estatisticas.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_estatisticas.setBounds(143, 114, 140, 35);
+		background.setLayer(lbl_estatisticas, 2);
 		background.add(lbl_estatisticas);
+		
+		JLabel statSquare = new JLabel("");
+		statSquare.setOpaque(true);
+		statSquare.setBackground(new Color(240, 240, 240));
+		background.setLayer(statSquare, 1);
+		statSquare.setBounds(58, 114, 310, 468);
+		background.add(statSquare);
+		
+		JLabel placarSquare = new JLabel("");
+		placarSquare.setOpaque(true);
+		placarSquare.setBackground(new Color(240, 240, 240));
+		background.setLayer(placarSquare, 1);
+		placarSquare.setBounds(460, 30, 360, 317);
+		background.add(placarSquare);
 		setVisible(true);
 	}
 }
