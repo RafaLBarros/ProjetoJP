@@ -416,7 +416,7 @@ public class Tabuleiro extends JFrame {
 						int casaAtual = 0;
 						int tipo = 0;
 						//Faz um for de acordo com o roll dele (Se ele tirou 3, andará 3 vezes)
-						for(int i = 0;i < roll*10;i++) {
+						for(int i = 0;i < roll;i++) {
 							//Pega o valor da casa atual após andar!
 							casaAtual = controlePersonagem.getPlayerInstanciado(turno-1).getCasaAtual()+1;
 							//Se a casa atual passar de 48, voltar para 48 pois é a casa final!
