@@ -1,28 +1,37 @@
 package view;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.Arrays;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.text.MaskFormatter;
 
 import controller.ControlePersonagem;
-import java.awt.Color;
-import javax.swing.JTextPane;
-import java.awt.Component;
+import controller.ControlePontuacao;
 
 public class Scoreboard extends JFrame{
 	private ControlePersonagem controlePersonagem;
+	private ControlePontuacao controlePontuacao;
 	private int[][] scorePlayer;
 	private Background background;
+	private JTextField textField;
 	
 	public Scoreboard(ControlePersonagem controlePersonagem) {
 		background = new Background("/images/2bg.jpeg");
 		this.controlePersonagem = controlePersonagem;
+		this.controlePontuacao = new ControlePontuacao();
 		// Não permite mexer o tamanho da pagina
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,7 +45,7 @@ public class Scoreboard extends JFrame{
 		background.setLayout(null);
 		
 		JLabel lbl_placar = new JLabel("Placar");
-		lbl_placar.setBounds(10, 30, 1280, 45);
+		lbl_placar.setBounds(0, 30, 1280, 45);
 		lbl_placar.setFont(new Font("Verdana", Font.BOLD, 36));
 		lbl_placar.setHorizontalAlignment(SwingConstants.CENTER);
 		background.setLayer(lbl_placar, 2);
@@ -143,8 +152,81 @@ public class Scoreboard extends JFrame{
 		placarSquare.setOpaque(true);
 		placarSquare.setBackground(new Color(240, 240, 240));
 		background.setLayer(placarSquare, 1);
-		placarSquare.setBounds(460, 30, 360, 317);
+		placarSquare.setBounds(460, 30, 360, 320);
 		background.add(placarSquare);
-		setVisible(true);
+		
+		JLabel lbl_placar_local = new JLabel("Placar Local");
+		lbl_placar_local.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_placar_local.setFont(new Font("Verdana", Font.BOLD, 36));
+		lbl_placar_local.setBounds(0, 430, 1280, 45);
+		background.add(lbl_placar_local);
+		
+		controlePontuacao.consultarPontos();
+		JLabel lbl_primeiro_local = new JLabel("1º: Jogador 0: 0 pontos!");
+		String stringbd = controlePontuacao.getValores();
+		lbl_primeiro_local.setText(stringbd);
+		lbl_primeiro_local.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_primeiro_local.setFont(new Font("Verdana", Font.BOLD, 17));
+		lbl_primeiro_local.setBounds(510, 480, 260, 35);
+		background.add(lbl_primeiro_local);
+		
+		JLabel lbl_segundo_local = new JLabel("2º: Jogador 0: 0 pontos!");
+		stringbd = controlePontuacao.getValores();
+		lbl_segundo_local.setText(stringbd);
+		lbl_segundo_local.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_segundo_local.setFont(new Font("Verdana", Font.BOLD, 17));
+		lbl_segundo_local.setBounds(510, 510, 260, 35);
+		background.add(lbl_segundo_local);
+		
+		JLabel lbl_terceiro_local = new JLabel("3º: Jogador 0: 0 pontos!");
+		stringbd = controlePontuacao.getValores();
+		lbl_terceiro_local.setText(stringbd);
+		lbl_terceiro_local.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_terceiro_local.setFont(new Font("Verdana", Font.BOLD, 17));
+		lbl_terceiro_local.setBounds(510, 540, 260, 35);
+		background.add(lbl_terceiro_local);
+		
+		JLabel placarLocalSquare = new JLabel("");
+		placarLocalSquare.setOpaque(true);
+		placarLocalSquare.setBackground(UIManager.getColor("Button.background"));
+		placarLocalSquare.setBounds(460, 420, 360, 178);
+		background.add(placarLocalSquare);
+		
+		MaskFormatter mascara;
+		try {
+			mascara = new MaskFormatter("UUU");
+			textField = new JFormattedTextField(mascara);
+			textField.setToolTipText("SEU NOME");
+			textField.setFont(new Font("Verdana", Font.BOLD, 17));
+			textField.setBounds(460, 365, 170, 40);
+			background.add(textField);
+			textField.setColumns(10);
+			setVisible(true);
+			JButton btnSalvarPontuacao = new JButton("Salvar Pontuação!");
+			btnSalvarPontuacao.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(textField.getText() == null) {
+						JOptionPane.showMessageDialog(null, "Digite seu nome!");
+					}else {
+						controlePontuacao.salvarPontuacao(textField.getText(), scorePlayer[3][0]);
+						String stringbd = controlePontuacao.getValores();
+						lbl_primeiro_local.setText(stringbd);
+						stringbd = controlePontuacao.getValores();
+						lbl_segundo_local.setText(stringbd);
+						stringbd = controlePontuacao.getValores();
+						lbl_terceiro_local.setText(stringbd);
+					}
+				}
+			});
+			btnSalvarPontuacao.setFont(new Font("Verdana", Font.BOLD, 11));
+			btnSalvarPontuacao.setBounds(650, 365, 170, 40);
+			background.add(btnSalvarPontuacao);
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		
 	}
 }
