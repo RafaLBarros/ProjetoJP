@@ -28,16 +28,16 @@ public class Consulta {
 		try {
 			return (String)resultado.getObject(2);
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			System.out.println(e.getMessage());
+			return "Vazio";
 		}
 	}
 	public int getPontos() {
 		try {
 			return (int)resultado.getObject(3);
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return -1;
+			System.out.println(e.getMessage());
+			return 0;
 		}
 	}
 	public String getData() {
@@ -46,8 +46,8 @@ public class Consulta {
 			String data = df.format(resultado.getObject(4));
 			return data;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			System.out.println(e.getMessage());
+			return "Vazio";
 		}
 	}
 	public void Proximo() {

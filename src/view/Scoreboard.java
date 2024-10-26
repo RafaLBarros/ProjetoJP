@@ -4,22 +4,22 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
 import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.text.MaskFormatter;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.DocumentFilter;
 
 import controller.ControlePersonagem;
 import controller.ControlePontuacao;
+import model.ScoreDocumentFilter;
 
 public class Scoreboard extends JFrame{
 	private ControlePersonagem controlePersonagem;
@@ -27,6 +27,7 @@ public class Scoreboard extends JFrame{
 	private int[][] scorePlayer;
 	private Background background;
 	private JTextField textField;
+	private boolean salvouPontos;
 	
 	public Scoreboard(ControlePersonagem controlePersonagem) {
 		background = new Background("/images/2bg.jpeg");
@@ -192,39 +193,40 @@ public class Scoreboard extends JFrame{
 		placarLocalSquare.setBounds(460, 420, 360, 178);
 		background.add(placarLocalSquare);
 		
-		MaskFormatter mascara;
-		try {
-			mascara = new MaskFormatter("UUU");
-			textField = new JFormattedTextField(mascara);
-			textField.setToolTipText("SEU NOME");
-			textField.setFont(new Font("Verdana", Font.BOLD, 17));
-			textField.setBounds(460, 365, 170, 40);
-			background.add(textField);
-			textField.setColumns(10);
-			setVisible(true);
-			JButton btnSalvarPontuacao = new JButton("Salvar Pontuação!");
-			btnSalvarPontuacao.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if(textField.getText() == null) {
-						JOptionPane.showMessageDialog(null, "Digite seu nome!");
-					}else {
-						controlePontuacao.salvarPontuacao(textField.getText(), scorePlayer[3][0]);
-						String stringbd = controlePontuacao.getValores();
-						lbl_primeiro_local.setText(stringbd);
-						stringbd = controlePontuacao.getValores();
-						lbl_segundo_local.setText(stringbd);
-						stringbd = controlePontuacao.getValores();
-						lbl_terceiro_local.setText(stringbd);
-					}
+		textField = new JTextField();
+		textField.setToolTipText("SEU NOME");
+		textField.setFont(new Font("Verdana", Font.BOLD, 17));
+		textField.setBounds(460, 365, 170, 40);
+		textField.setText("");
+		DocumentFilter dfilter = new ScoreDocumentFilter();
+		((AbstractDocument)textField.getDocument()).setDocumentFilter(dfilter);
+		background.add(textField);
+		textField.setColumns(10);
+		setVisible(true);
+		salvouPontos = false;
+		JButton btnSalvarPontuacao = new JButton("Salvar Pontuação!");
+		btnSalvarPontuacao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textField.getText().length() < 3 || textField.getText() == null) {
+					JOptionPane.showMessageDialog(null, "Digite seu nome com 3 digitos!");
+				}else if(salvouPontos == true) {
+					JOptionPane.showMessageDialog(null, "Pontuação já registrada!");
+				}else {
+					controlePontuacao.salvarPontuacao(textField.getText(), scorePlayer[3][0]);
+					String stringbd = controlePontuacao.getValores();
+					lbl_primeiro_local.setText(stringbd);
+					stringbd = controlePontuacao.getValores();
+					lbl_segundo_local.setText(stringbd);
+					stringbd = controlePontuacao.getValores();
+					lbl_terceiro_local.setText(stringbd);
+					salvouPontos = true;
 				}
-			});
-			btnSalvarPontuacao.setFont(new Font("Verdana", Font.BOLD, 11));
-			btnSalvarPontuacao.setBounds(650, 365, 170, 40);
-			background.add(btnSalvarPontuacao);
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+			}
+		});
+		btnSalvarPontuacao.setFont(new Font("Verdana", Font.BOLD, 11));
+		btnSalvarPontuacao.setBounds(650, 365, 170, 40);
+		background.add(btnSalvarPontuacao);
+		
 		
 		
 		
